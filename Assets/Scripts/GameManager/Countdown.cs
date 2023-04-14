@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Countdown : MonoBehaviour {
     private readonly float startTime = 10.5f;
@@ -13,12 +14,14 @@ public class Countdown : MonoBehaviour {
 
     [SerializeField]
     private TMP_Text timerTextField;
+    [SerializeField] private Slider countDownSlider;
 
     public Action CountdownTrigger;
 
     private void Awake() {
         timerTextField.text = $"{startTime:0.#}";
         currentTime = startTime;
+        countDownSlider.value = 1;
     }
 
     private void Update() {
@@ -27,6 +30,8 @@ public class Countdown : MonoBehaviour {
         currentTime -= Time.deltaTime;
 
         timerTextField.text = $"{currentTime:0}";
+        float scaledValue = currentTime / startTime;
+        countDownSlider.value = scaledValue;
 
         if (currentTime <= 0) {
             CountdownTrigger?.Invoke();
@@ -38,6 +43,7 @@ public class Countdown : MonoBehaviour {
         //Wait for 5 sec
         gracePeriod = true;
         timerTextField.enabled = false;
+        countDownSlider.value = 1;
 
         yield return new WaitForSeconds(timerGracePeriod);
 
