@@ -1,10 +1,9 @@
+using System;
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class Countdown : MonoBehaviour
-{
+public class Countdown : MonoBehaviour {
     private readonly float startTime = 10.5f;
     private readonly float timerGracePeriod = 5f;
 
@@ -15,28 +14,27 @@ public class Countdown : MonoBehaviour
     [SerializeField]
     private TMP_Text timerTextField;
 
-    private void Awake()
-    {
+    public Action CountdownTrigger;
+
+    private void Awake() {
         timerTextField.text = $"{startTime:0.#}";
         currentTime = startTime;
     }
 
-    private void Update()
-    {
-        if(gracePeriod) { return; }
+    private void Update() {
+        if (gracePeriod) { return; }
 
         currentTime -= Time.deltaTime;
 
         timerTextField.text = $"{currentTime:0}";
 
-        if (currentTime <= 0)
-        {
+        if (currentTime <= 0) {
+            CountdownTrigger?.Invoke();
             StartCoroutine(RestartTimer());
         }
     }
 
-    private IEnumerator RestartTimer()
-    {
+    private IEnumerator RestartTimer() {
         //Wait for 5 sec
         gracePeriod = true;
         timerTextField.enabled = false;
