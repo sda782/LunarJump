@@ -19,9 +19,13 @@ public class Countdown : MonoBehaviour {
     public Action CountdownTrigger;
 
     private void Awake() {
-        timerTextField.text = $"{startTime:0.#}";
+        //timerTextField.text = $"{startTime:0.#}";
         currentTime = startTime;
         countDownSlider.value = 1;
+    }
+
+    private void Start() {
+        CountdownTrigger?.Invoke();
     }
 
     private void Update() {
@@ -29,12 +33,12 @@ public class Countdown : MonoBehaviour {
 
         currentTime -= Time.deltaTime;
 
-        timerTextField.text = $"{currentTime:0}";
+        //timerTextField.text = $"{currentTime:0}";
         float scaledValue = currentTime / startTime;
         countDownSlider.value = scaledValue;
 
         if (currentTime <= 0) {
-            CountdownTrigger?.Invoke();
+
             StartCoroutine(RestartTimer());
         }
     }
@@ -42,14 +46,15 @@ public class Countdown : MonoBehaviour {
     private IEnumerator RestartTimer() {
         //Wait for 5 sec
         gracePeriod = true;
-        timerTextField.enabled = false;
-        countDownSlider.value = 1;
+        //timerTextField.enabled = false;
 
         yield return new WaitForSeconds(timerGracePeriod);
 
         gracePeriod = false;
         currentTime = startTime;
 
-        timerTextField.enabled = true;
+        countDownSlider.value = 1;
+        CountdownTrigger?.Invoke();
+        //timerTextField.enabled = true;
     }
 }

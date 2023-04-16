@@ -14,9 +14,6 @@ public class DestoryGround : MonoBehaviour {
             Vector3 point = new Vector3(x - offset, 5);
             spline.InsertPointAt(i, point);
         }
-        for (int i = 0; i < spline.GetPointCount(); i++) {
-            Debug.Log($"index: {i}  position: {spline.GetPosition(i)}");
-        }
     }
     private void OnCollisionEnter2D(Collision2D col) {
         if (col.gameObject.tag != "MoonPiece") return;
